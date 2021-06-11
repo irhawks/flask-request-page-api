@@ -1,0 +1,26 @@
+version: '3'
+services:
+  requests1:
+    image: irhawks/fetcher-requests:latest
+    ports:
+      - 5000:5000
+  requests2:
+    image: irhawks/fetcher-requests:latest
+    ports:
+      - 50010:5000
+  requests3:
+    image: irhawks/fetcher-requests:latest
+    ports:
+      - 5002:5000
+  requests4:
+    image: irhawks/fetcher-requests:latest
+    ports:
+      - 5003:5000
+  requests5:
+    image: irhawks/fetcher-requests:latest
+    ports:
+      - 5004:5000
+  requests6:
+    image: irhawks/fetcher-requests:latest
+    ports:
+      - 5005:5000

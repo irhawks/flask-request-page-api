@@ -1,0 +1,53 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: requests-crawler
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: requests-crawler
+        category: data-access
+    spec:
+      imagePullSecrets:
+        - name: registry-cred
+      containers:
+      - name: requests-crawler-instance
+        image: registry.x-native.org/requests-crawler:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+          name: service
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: requests-crawler-service
+spec:
+  type: ClusterIP
+  ports:
+  - name: service
+    port: 80
+    protocol: TCP 
+    targetPort: 5000
+  selector:
+    app: requests-crawler
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: requests-crawler
+  labels:
+    app: requests-crawler
+spec:
+  rules:
+  - host: crawl.x-native.org
+    http:
+      paths:
+      - backend:
+          serviceName: requests-crawler-service
+          servicePort: 80
+        path: /api/v1/requests-crawler
